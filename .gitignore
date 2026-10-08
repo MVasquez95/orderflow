@@ -44,3 +44,5 @@ Thumbs.db
 # temporary
 .tmp
 .temp
+node_modules/
+dist/

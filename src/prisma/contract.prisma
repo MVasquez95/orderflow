@@ -1,0 +1,26 @@
+// use prisma-8
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model User {
+  id           Uuid              @id @default(uuid(7))
+  email        String            @unique
+  passwordHash String
+  role         Role              @default(USER)
+  createdAt    TimestamptzString @default(now())
+  updatedAt    temporal.updatedAtString()
+}
+
+model Product {
+  id          Uuid              @id @default(uuid(7))
+  sku         String            @unique
+  name        String
+  description String?
+  price       Decimal
+  active      Boolean           @default(true)
+  createdAt   TimestamptzString @default(now())
+  updatedAt   temporal.updatedAtString()
+}
