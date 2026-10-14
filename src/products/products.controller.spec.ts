@@ -5,22 +5,31 @@ import { ProductsService } from './products.service.js';
 describe('ProductsController', () => {
   let controller: ProductsController;
 
+  const productsServiceMock = {
+    findAll: jest.fn(),
+  };
+
   beforeEach(async () => {
+    jest.clearAllMocks();
+    productsServiceMock.findAll.mockResolvedValue([]);
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ProductsController],
-      providers: [ProductsService],
+      providers: [
+        {
+          provide: ProductsService,
+          useValue: productsServiceMock,
+        },
+      ],
     }).compile();
 
     controller = module.get<ProductsController>(ProductsController);
   });
 
-  it('should return the product list', () => {
-    expect(controller.findAll()).toEqual([
-      {
-        sku: 'LAPTOP-001',
-        name: 'Laptop Lenovo',
-        price: 2500,
-      },
-    ]);
+  it('should return products from the service', async () => {
+    const result = await controller.findAll();
+
+    expect(result).toEqual([]);
+    expect(productsServiceMock.findAll).toHaveBeenCalledTimes(1);
   });
 });
